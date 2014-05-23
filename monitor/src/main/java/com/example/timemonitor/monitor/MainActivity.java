@@ -1,16 +1,21 @@
 package com.example.timemonitor.monitor;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 
 public class MainActivity extends ActionBarActivity {
 
     private Spinner profileDropDown;
+    private CountDownTimer timer;
     private static final String[] Profiles = {"Workout", "Work"};
 
     @Override
@@ -42,4 +47,34 @@ public class MainActivity extends ActionBarActivity {
         return id == R.id.action_settings || super.onOptionsItemSelected(item);
     }
 
+    public void startTimer(View view) {
+        Button startButton = (Button)findViewById(R.id.startbutton);
+        startButton.setEnabled(false);
+
+        Button stopButton = (Button)findViewById(R.id.stopbutton);
+        stopButton.setEnabled(true);
+
+        final TextView timerText = (TextView)findViewById(R.id.timertext);
+
+        timer = new CountDownTimer(30000, 1000)
+        {
+
+            @Override
+            public void onTick(long l) {
+                timerText.setText("" + l);
+            }
+
+            @Override
+            public void onFinish() {
+                timer.start();
+            }
+        }.start();
+    }
+
+    public void stopTimer(View view) {
+        if(timer != null)
+        {
+            timer.cancel();
+        }
+    }
 }
