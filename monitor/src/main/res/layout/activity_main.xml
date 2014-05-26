@@ -32,4 +32,10 @@
         android:layout_below="@id/startbutton"
         android:onClick="stopTimer"
         android:enabled="false"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/stopbutton"
+        android:layout_marginTop="15dp"/>
 </RelativeLayout>
