@@ -3,6 +3,7 @@ package com.example.timemonitor.monitor;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
+import android.text.format.Time;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,12 +12,19 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+
 
 public class MainActivity extends ActionBarActivity {
 
     private Spinner profileDropDown;
     private CountDownTimer timer;
+    private Button startButton;
+    private Button stopButton;
+
     private static final String[] Profiles = {"Workout", "Work"};
+
+    private Time startTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +56,13 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void startTimer(View view) {
-        Button startButton = (Button)findViewById(R.id.startbutton);
+        startTime = new Time();
+        startTime.setToNow();
+
+        startButton = (Button)findViewById(R.id.startbutton);
         startButton.setEnabled(false);
 
-        Button stopButton = (Button)findViewById(R.id.stopbutton);
+        stopButton = (Button)findViewById(R.id.stopbutton);
         stopButton.setEnabled(true);
 
         final TextView timerText = (TextView)findViewById(R.id.timertext);
@@ -61,7 +72,12 @@ public class MainActivity extends ActionBarActivity {
 
             @Override
             public void onTick(long l) {
-                timerText.setText("" + l);
+                Time currentTime = new Time();
+                currentTime.setToNow();
+
+                long timeDiff = (currentTime.toMillis(false) - startTime.toMillis(false)) / 1000;
+
+                timerText.setText("" + timeDiff);
             }
 
             @Override
@@ -75,6 +91,8 @@ public class MainActivity extends ActionBarActivity {
         if(timer != null)
         {
             timer.cancel();
+            stopButton.setEnabled(false);
+            startButton.setEnabled(true);
         }
     }
 }
